@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>집가고싶다의 푹신푹신 소개 페이지 🛌</title>
+  <!-- Google Fonts: Jua & Gaegu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #fdf6ec;
+      --card-bg: #fff8f0;
+      --primary: #ffb7b2;
+      --accent: #ffdac1;
+      --text: #5d4037;
+      --shadow: rgba(141, 110, 99, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      font-family: 'Gaegu', cursive;
+      font-size: 1.3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px 60px;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* 마우스 반짝이 카버스 */
+    #sparkle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* 메인 컨테이너 */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 1;
+    }
+
+    /* 헤더 섹션 */
+    .header {
+      background: white;
+      border: 3px solid var(--accent);
+      border-radius: 30px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 10px 20px var(--shadow);
+      position: relative;
+    }
+
+    .header::before, .header::after {
+      content: '☁️';
+      font-size: 2rem;
+      position: absolute;
+      top: -15px;
+    }
+    .header::before { left: 20px; }
+    .header::after { right: 20px; }
+
+    .title-sub {
+      font-size: 1.2rem;
+      color: #a1887f;
+      margin-bottom: 5px;
+    }
+
+    /* 통통 튀는 별명 애니메이션 */
+    .bounce-nickname {
+      font-family: 'Jua', sans-serif;
+      font-size: 2.5rem;
+      color: #e57373;
+      display: inline-block;
+      margin: 10px 0;
+      text-shadow: 2px 2px 0px #ffcdd2;
+    }
+
+    .bounce-nickname span {
+      display: inline-block;
+      animation: bounce 1.2s infinite ease-in-out alternate;
+    }
+
+    /* 글자별 애니메이션 시차 */
+    .bounce-nickname span:nth-child(1) { animation-delay: 0.0s; }
+    .bounce-nickname span:nth-child(2) { animation-delay: 0.1s; }
+    .bounce-nickname span:nth-child(3) { animation-delay: 0.2s; }
+    .bounce-nickname span:nth-child(4) { animation-delay: 0.3s; }
+    .bounce-nickname span:nth-child(5) { animation-delay: 0.4s; }
+    .bounce-nickname span:nth-child(6) { animation-delay: 0.5s; }
+
+    @keyframes bounce {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-15px) scale(1.05); }
+    }
+
+    .bed-badge {
+      display: inline-block;
+      background-color: var(--accent);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      color: #6d4c41;
+      margin-top: 5px;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: 15px;
+      color: #8d6e63;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* 좋아하는 것 카드 뒤집기 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+    }
+
+    .flip-card {
+      background-color: transparent;
+      height: 190px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 20px;
+      box-shadow: 0 8px 15px var(--shadow);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      border: 2px solid #ffe0b2;
+    }
+
+    .flip-card-front {
+      background: white;
+      color: var(--text);
+    }
+
+    .flip-card-front .icon {
+      font-size: 3.2rem;
+      margin-bottom: 8px;
+    }
+
+    .flip-card-front .item-name {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.4rem;
+    }
+
+    .flip-card-front .hint {
+      font-size: 0.9rem;
+      color: #bcaaa4;
+      margin-top: 5px;
+    }
+
+    .flip-card-back {
+      background-color: #fff3e0;
+      color: #4e342e;
+      transform: rotateY(180deg);
+      border-color: #ffcc80;
+    }
+
+    .flip-card-back .reason-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.2rem;
+      color: #e65100;
+      margin-bottom: 5px;
+    }
+
+    .flip-card-back .reason-text {
+      font-size: 1.1rem;
+      line-height: 1.3;
+      word-break: keep-all;
+    }
+
+    /* OX 퀴즈 */
+    .quiz-card {
+      background: white;
+      border-radius: 25px;
+      padding: 25px 20px;
+      border: 3px solid #e1bee7;
+      box-shadow: 0 8px 15px var(--shadow);
+      text-align: center;
+    }
+
+    .quiz-question {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #4a148c;
+    }
+
+    .quiz-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .quiz-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      font-family: 'Jua', sans-serif;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .quiz-btn-o {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .quiz-btn-x {
+      background-color: #ffcdd2;
+      color: #c62828;
+    }
+
+    .quiz-btn:active {
+      transform: scale(0.92);
+    }
+
+    .quiz-result {
+      min-height: 40px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      padding: 5px 10px;
+      transition: all 0.3s;
+    }
+
+    .quiz-result.correct {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .quiz-result.wrong {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+
+    /* 오늘 할 미션 뽑기 */
+    .mission-card {
+      background: white;
+      border-radius: 25px;
+      padding: 25px 20px;
+      border: 3px solid #b3e5fc;
+      box-shadow: 0 8px 15px var(--shadow);
+      text-align: center;
+    }
+
+    .mission-display {
+      background-color: #e1f5fe;
+      border: 2px dashed #81d4fa;
+      border-radius: 15px;
+      padding: 20px 15px;
+      margin: 15px 0;
+      font-size: 1.3rem;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: keep-all;
+      color: #0277bd;
+      font-weight: bold;
+    }
+
+    .draw-btn {
+      background-color: #81d4fa;
+      color: #01579b;
+      border: none;
+      padding: 12px 30px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.3rem;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(129, 212, 250, 0.4);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .draw-btn:active {
+      transform: scale(0.95);
+      background-color: #4fc3f7;
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      font-size: 1rem;
+      color: #bcaaa4;
+      margin-top: 10px;
+    }
+
+    /* 떠다니는 토끼 인형 스타일 */
+    .floating-bunny {
+      position: fixed;
+      font-size: 2.8rem;
+      cursor: pointer;
+      z-index: 100;
+      user-select: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: floatWiggle 3s ease-in-out infinite alternate;
+    }
+
+    .floating-bunny:hover {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    @keyframes floatWiggle {
+      0% { transform: translateY(0px) rotate(-5deg); }
+      50% { transform: translateY(-12px) rotate(5deg); }
+      100% { transform: translateY(-25px) rotate(-3deg); }
+    }
+
+    /* 콤보 텍스트 애니메이션 */
+    .combo-display {
+      position: fixed;
+      font-family: 'Jua', sans-serif;
+      font-size: 2.8rem;
+      color: #ff4081;
+      text-shadow: 3px 3px 0px #ffffff, -3px -3px 0px #ffffff, 3px -3px 0px #ffffff, -3px 3px 0px #ffffff, 0px 5px 15px rgba(255, 64, 129, 0.4);
+      pointer-events: none;
+      z-index: 10003;
+      transform: translate(-50%, -50%) scale(0.5);
+      animation: comboPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes comboPop {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.4) rotate(-5deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -80%) scale(1.3) rotate(5deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -120%) scale(1) rotate(0deg);
+      }
+    }
+
+    /* 퍼엉! 터짐 텍스트 효과 제거 및 충격파 (Shockwave) 링 효과 */
+    .shockwave {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 4px solid #ffb7b2;
+      box-shadow: 0 0 15px #ffb7b2, inset 0 0 15px #ffb7b2;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%) scale(0.2);
+      animation: shockwaveAnim 0.5s ease-out forwards;
+    }
+
+    @keyframes shockwaveAnim {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(7);
+      }
+    }
+
+    /* 폭탄 터짐 섬광(Flash) 이펙트 */
+    .bomb-flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      z-index: 20000;
+      pointer-events: none;
+      opacity: 1;
+      animation: flashFade 1.2s ease-out forwards;
+    }
+
+    @keyframes flashFade {
+      0% { opacity: 1; background-color: #ffffff; box-shadow: inset 0 0 100px 50px #ffeb3b; }
+      20% { opacity: 0.98; background-color: #ffffff; }
+      50% { opacity: 0.85; background-color: #ffab00; }
+      100% { opacity: 0; }
+    }
+
+    /* 화면 전체 흔들림 (Screen Shake) 효과 */
+    .screen-shake {
+      animation: shakeAnim 0.8s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shakeAnim {
+      10%, 90% { transform: translate3d(-12px, 8px, 0) rotate(-3deg); }
+      20%, 80% { transform: translate3d(18px, -14px, 0) rotate(4deg); }
+      30%, 50%, 70% { transform: translate3d(-24px, 20px, 0) rotate(-5deg); }
+      40%, 60% { transform: translate3d(24px, -18px, 0) rotate(5deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 마우스 반짝이 애니메이션 캔버스 -->
+  <canvas id="sparkle-canvas"></canvas>
+
+  <!-- 떠다니는 토끼 인형들을 위한 컨테이너 -->
+  <div id="bunny-container"></div>
+
+  <div class="container">
+    
+    <!-- 프로필 헤더 -->
+    <header class="header">
+      <div class="title-sub">푹신한 이불 속이 제일 좋은</div>
+      <h1 class="bounce-nickname" id="nickname">
+        <span>집</span><span>가</span><span>고</span><span>싶</span><span>다</span>
+      </h1>
+      <br>
+      <div class="bed-badge">🛏️ 장래희망: 침대와 일체화</div>
+    </header>
+
+    <!-- 좋아하는 것 3가지 (카드 뒤집기) -->
+    <section>
+      <h2 class="section-title">✨ 내가 좋아하는 3가지 (터치해봐!)</h2>
+      <div class="card-grid">
+        
+        <!-- 카드 1: 집 -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🏠</div>
+              <div class="item-name">집</div>
+              <div class="hint">💬 누르면 이유 공개!</div>
+            </div>
+            <div class="flip-card-back">
+              <div class="reason-title">좋아하는 이유</div>
+              <div class="reason-text">와이파이가 빵빵하고, 세쌍둥이 바퀴벌레도 없으며, 언제나 나를 따뜻하게 품어주기 때문!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 2: 그림 -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🎨</div>
+              <div class="item-name">그림</div>
+              <div class="hint">💬 누르면 이유 공개!</div>
+            </div>
+            <div class="flip-card-back">
+              <div class="reason-title">좋아하는 이유</div>
+              <div class="reason-text">머릿속 유쾌한 딴생각들을 끄적이다 보면 세상의 모든 스트레스가 사라지니까!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 3: 침대 -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🛌</div>
+              <div class="item-name">침대</div>
+              <div class="hint">💬 누르면 이유 공개!</div>
+            </div>
+            <div class="flip-card-back">
+              <div class="reason-title">좋아하는 이유</div>
+              <div class="reason-text">이불 속 온도 36.5도와 베개의 폭신함은 인류 최고의 발명품이라 확신하기 때문!</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OX 퀴즈 -->
+    <section class="quiz-card">
+      <h2 class="section-title">❓ OX 퀴즈</h2>
+      <div class="quiz-question">"나는 지금 잠을 자고 싶다!"</div>
+      <div class="quiz-buttons">
+        <button class="quiz-btn quiz-btn-o" onclick="checkQuiz(true)">O</button>
+        <button class="quiz-btn quiz-btn-x" onclick="checkQuiz(false)">X</button>
+      </div>
+      <div class="quiz-result" id="quiz-result">버튼을 눌러 정답을 맞혀보세요!</div>
+    </section>
+
+    <!-- 오늘 할 미션 뽑기 -->
+    <section class="mission-card">
+      <h2 class="section-title">🎲 오늘 할 미션 뽑기</h2>
+      <div class="mission-display" id="mission-display">버튼을 눌러 오늘의 미션을 확인하세요! 💤</div>
+      <button class="draw-btn" onclick="drawMission()">미션 뽑기 🎯</button>
+    </section>
+
+    <footer class="footer">
+      © 푹신푹신 집가고싶다의 소소한 소개 페이지
+    </footer>
+
+  </div>
+
+  <script>
+    /* ==========================================
+       1. 카드 뒤집기 로직
+       ========================================== */
+    function flipCard(cardElement) {
+      cardElement.classList.toggle('flipped');
+    }
+
+    /* ==========================================
+       2. OX 퀴즈 로직
+       ========================================== */
+    function checkQuiz(answer) {
+      const resultDiv = document.getElementById('quiz-result');
+      
+      if (answer === true) {
+        // 정답 (O)
+        resultDiv.className = "quiz-result correct";
+        resultDiv.innerHTML = "🎉 정답입니다! 딩동댕! 100점 만점에 1000점! 😴";
+        createConfetti();
+      } else {
+        // 오답 (X)
+        resultDiv.className = "quiz-result wrong";
+        resultDiv.innerHTML = "🥺 땡! 틀렸습니다... 침대는 언제나 날 기다린다구요!";
+      }
+    }
+
+    // 맞혔을 때 팡파레/폭죽 효과
+    function createConfetti() {
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
+        confetti.innerText = ['🎉', '✨', '💤', '⭐', '🎈'][Math.floor(Math.random() * 5)];
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-20px';
+        confetti.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        confetti.style.zIndex = 10000;
+        confetti.style.pointerEvents = 'none';
+        confetti.style.transition = 'transform 2s ease-out, opacity 2s ease-out';
+        
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+          confetti.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
+          confetti.style.opacity = '0';
+        }, 50);
+
+        setTimeout(() => {
+          confetti.remove();
+        }, 2050);
+      }
+    }
+
+    /* ==========================================
+       3. 오늘 할 미션 뽑기 (10개 이상)
+       ========================================== */
+    const missions = [
+      "🛏️ 베개 깃털처럼 폭신하게 3번 털기",
+      "☕ 제일 좋아하는 따뜻한 음료 마시기",
+      "🎨 아무거나 낙서 1분 동안 신나게 하기",
+      "💤 눈 감고 10초 동안 무념무상으로 숨 쉬기",
+      "📱 이불 속에서 제일 좋아하는 영상 한 편 보기",
+      "🎧 귀여운 노래 들으며 가볍게 몸 흔들기",
+      "😴 '오늘 진짜 고생했다' 스스로에게 말해주기",
+      "🧸 가장 아끼는 인형이나 베개 꼬옥 안아주기",
+      "🙆‍♂️ 스트레칭 크게 한 번 하고 기지개 켜기",
+      "🍊 새콤달콤한 귤이나 간식 챙겨 먹기",
+      "🌙 오늘 밤에 꿀꿈 꾸라고 스스로에게 주문 걸기",
+      "🧦 따뜻한 수면양말 챙겨 신기"
+    ];
+
+    function drawMission() {
+      const display = document.getElementById('mission-display');
+      
+      // 약간의 애니메이션 효과 (랜덤으로 바뀌는 척)
+      let count = 0;
+      const interval = setInterval(() => {
+        const tempIndex = Math.floor(Math.random() * missions.length);
+        display.innerText = missions[tempIndex];
+        count++;
+        if (count > 6) {
+          clearInterval(interval);
+          const finalIndex = Math.floor(Math.random() * missions.length);
+          display.innerText = "✨ " + missions[finalIndex];
+        }
+      }, 70);
+    }
+
+    /* ==========================================
+       4. 마우스/터치 따라다니는 반짝이 (Sparkle)
+       ========================================== */
+    const canvas = document.getElementById('sparkle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 6 + 2;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
+        this.color = `hsl(${Math.random() * 40 + 30}, 100%, 75%)`; // 포근하고 반짝이는 연노랑~주황 톤
+        this.alpha = 1;
+        this.decay = Math.random() * 0.03 + 0.015;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        // 별/반짝이 모양 대신 예쁜 원과 별빛 느낌
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function addSparkles(x, y) {
+      for (let i = 0; i < 3; i++) {
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    // 마우스 및 터치 이벤트 연결
+    window.addEventListener('mousemove', (e) => {
+      addSparkles(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        addSparkles(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
+
+    function handleParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+          i--;
+        }
+      }
+      requestAnimationFrame(handleParticles);
+    }
+
+    handleParticles();
+
+    /* ==========================================
+       5. 떠다니는 토끼, 곰돌이 & 폭탄 팡 터지는 효과
+       ========================================== */
+    const bunnyContainer = document.getElementById('bunny-container');
+    const MAX_BUNNIES = 15; // 인형/폭탄 최대 개수
+
+    function createBunny() {
+      if (bunnyContainer.children.length >= MAX_BUNNIES) return;
+
+      const bunny = document.createElement('div');
+      bunny.className = 'floating-bunny';
+      
+      // 약 20% 확률로 폭탄(💣) 생성, 나머지는 토끼(🐰)와 곰돌이(🧸)
+      const isBomb = Math.random() < 0.2;
+      if (isBomb) {
+        bunny.innerText = '💣';
+      } else {
+        const bunnyEmojis = ['🐰', '🧸'];
+        bunny.innerText = bunnyEmojis[Math.floor(Math.random() * bunnyEmojis.length)];
+      }
+
+      // 시작 위치 및 이동 방향 설정
+      let x = Math.random() * (window.innerWidth - 60);
+      let y = Math.random() * (window.innerHeight - 60);
+      let speedX = (Math.random() - 0.5) * 2;
+      let speedY = (Math.random() - 0.5) * 2;
+
+      // 최소 이동 속도 보장
+      if (Math.abs(speedX) < 0.5) speedX = speedX < 0 ? -0.9 : 0.9;
+      if (Math.abs(speedY) < 0.5) speedY = speedY < 0 ? -0.9 : 0.9;
+
+      bunny.style.left = `${x}px`;
+      bunny.style.top = `${y}px`;
+
+      // 둥둥 이동 애니메이션
+      function moveBunny() {
+        if (!bunny.parentElement) return; // 이미 터진 경우
+
+        x += speedX;
+        y += speedY;
+
+        // 벽에 부딪히면 튕기기
+        if (x <= 10 || x >= window.innerWidth - 70) speedX *= -1;
+        if (y <= 10 || y >= window.innerHeight - 70) speedY *= -1;
+
+        bunny.style.left = `${x}px`;
+        bunny.style.top = `${y}px`;
+
+        requestAnimationFrame(moveBunny);
+      }
+
+      // 클릭 / 터치 시 팡 터지는 이벤트
+      function popBunny(e) {
+        e.stopPropagation();
+        
+        // 터진 지점 좌표 구하기
+        const rect = bunny.getBoundingClientRect();
+        const popX = rect.left + rect.width / 2;
+        const popY = rect.top + rect.height / 2;
+
+        if (isBomb) {
+          // 폭탄 누르면 콤보 초기화
+          resetCombo();
+          // 폭탄 터짐 연출 발동 (초대형 빛 섬광 + 화면 강한 흔들림 + 거대 폭발)
+          triggerBombExplosion(popX, popY);
+        } else {
+          // 일반 인형 콤보 계산 및 텍스트 띄우기
+          triggerCombo(popX, popY);
+          // 화려한 팡 파티클 효과 생성
+          createPopParticles(popX, popY);
+        }
+
+        // 제거 후 새 인형/폭탄 보충
+        bunny.remove();
+        setTimeout(createBunny, Math.random() * 1500 + 500);
+      }
+
+      bunny.addEventListener('click', popBunny);
+      bunny.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        popBunny(e);
+      });
+
+      bunnyContainer.appendChild(bunny);
+      requestAnimationFrame(moveBunny);
+    }
+
+    // 폭탄 폭발 시 강력한 빛과 화면 흔들림 연출
+    function triggerBombExplosion(x, y) {
+      // 1. 화면 전체 눈부신 섬광 (Flash) - 극대화 연출
+      const flash = document.createElement('div');
+      flash.className = 'bomb-flash';
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 1200);
+
+      // 2. 화면 전체 강력한 진동/흔들림 (Screen Shake)
+      document.body.classList.remove('screen-shake');
+      void document.body.offsetWidth;
+      document.body.classList.add('screen-shake');
+      setTimeout(() => document.body.classList.remove('screen-shake'), 850);
+
+      // 3. 초대형 화면 가득 충격파 Ring
+      for (let r = 0; r < 5; r++) {
+        const ring = document.createElement('div');
+        ring.className = 'shockwave';
+        ring.style.left = `${x}px`;
+        ring.style.top = `${y}px`;
+        ring.style.borderColor = r % 2 === 0 ? '#ff1744' : '#ffea00';
+        ring.style.animationDuration = '1s';
+        ring.style.animationDelay = `${r * 0.08}s`;
+        document.body.appendChild(ring);
+        setTimeout(() => ring.remove(), 1100);
+      }
+
+      // 4. 화면 전체를 뒤덮는 엄청나게 큰 불꽃 파티클
+      const bombParticles = ['💥', '🔥', '⚡', '✨', '🌟', '💥', '🧡', '🟡', '💣', '💥'];
+      const particleCount = 70;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.innerText = bombParticles[Math.floor(Math.random() * bombParticles.length)];
+        particle.style.position = 'fixed';
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.fontSize = `${Math.random() * 50 + 40}px`;
+        particle.style.zIndex = '20005';
+        particle.style.pointerEvents = 'none';
+        particle.style.transition = 'transform 1s cubic-bezier(0.05, 0.9, 0.2, 1), opacity 1s ease-out';
+        particle.style.filter = 'drop-shadow(0 0 20px rgba(255,80,0,1))';
+
+        document.body.appendChild(particle);
+
+        const angle = (Math.PI * 2 / particleCount) * i + (Math.random() * 0.5 - 0.25);
+        const dist = Math.random() * (Math.max(window.innerWidth, window.innerHeight) * 0.7) + 150;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const rotateDeg = Math.random() * 1080 - 540;
+
+        setTimeout(() => {
+          particle.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotateDeg}deg) scale(0.2)`;
+          particle.style.opacity = '0';
+        }, 20);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 1050);
+      }
+    }
+
+    // 터질 때 시각적 파티클 애니메이션 (효과음 글자 제외)
+    function createPopParticles(x, y) {
+      // 1. 충격파 Ring 2겹 생성
+      for (let r = 0; r < 2; r++) {
+        const ring = document.createElement('div');
+        ring.className = 'shockwave';
+        ring.style.left = `${x}px`;
+        ring.style.top = `${y}px`;
+        ring.style.borderColor = r === 0 ? '#ffb7b2' : '#ffd166';
+        ring.style.animationDelay = `${r * 0.08}s`;
+        document.body.appendChild(ring);
+
+        setTimeout(() => ring.remove(), 600);
+      }
+
+      // 2. 풍성한 주변 팡파레 파티클
+      const popItems = ['✨', '💥', '💖', '⭐', '☁️', '🌸', '🍯', '🎉', '🌟'];
+      const particleCount = 24;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.innerText = popItems[Math.floor(Math.random() * popItems.length)];
+        particle.style.position = 'fixed';
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.fontSize = `${Math.random() * 20 + 20}px`;
+        particle.style.zIndex = '10002';
+        particle.style.pointerEvents = 'none';
+        particle.style.transition = 'transform 0.7s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 0.7s ease-out';
+        particle.style.filter = 'drop-shadow(0 2px 6px rgba(255,180,180,0.8))';
+
+        document.body.appendChild(particle);
+
+        const angle = (Math.PI * 2 / particleCount) * i + (Math.random() * 0.4 - 0.2);
+        const dist = Math.random() * 120 + 60;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const rotateDeg = Math.random() * 720 - 360;
+
+        setTimeout(() => {
+          particle.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotateDeg}deg) scale(0)`;
+          particle.style.opacity = '0';
+        }, 20);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 750);
+      }
+    }
+
+    /* ==========================================
+       6. 연속 클릭 콤보 (COMBO) 시스템
+       ========================================== */
+    let comboCount = 0;
+    let comboTimer = null;
+
+    function resetCombo() {
+      comboCount = 0;
+      if (comboTimer) {
+        clearTimeout(comboTimer);
+        comboTimer = null;
+      }
+    }
+
+    function triggerCombo(x, y) {
+      comboCount++;
+
+      // 타이머 리셋 (1초 이내 다시 누르면 유지)
+      if (comboTimer) {
+        clearTimeout(comboTimer);
+      }
+
+      comboTimer = setTimeout(() => {
+        resetCombo();
+      }, 1000);
+
+      // 5단위 콤보 달성 시 화면 상단에서 파티클 폭포 효과 발생
+      if (comboCount % 5 === 0) {
+        createTopRainEffect();
+      }
+
+      // 콤보 텍스트 생성
+      showComboText(x, y, comboCount);
+    }
+
+    // 화면 맨 위에서 전체로 내려오는 파티클 효과 (5 콤보 단위 - 별빛 스타일)
+    function createTopRainEffect() {
+      const starEmojis = ['✨', '⭐', '🌟', '💫', '🌌', '⚡'];
+      const starColors = ['#fff59d', '#ffe082', '#ffcc80', '#ffffff', '#ffab91', '#e1bee7'];
+      const count = 90; // 파티클 수
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.innerText = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+        p.style.position = 'fixed';
+        
+        // 화면 좌우(vw) 전체에 더 균등하게 분산배치
+        const startLeft = (i / count) * 100 + (Math.random() * 6 - 3);
+        p.style.left = `${Math.min(Math.max(startLeft, 2), 98)}vw`;
+        
+        // 상단 출발 위치 분산 (한꺼번에 내려오지 않도록 Y축 출발 지점 분산)
+        p.style.top = `-${Math.random() * 80 + 30}px`;
+        p.style.fontSize = `${Math.random() * 22 + 16}px`;
+        p.style.color = starColors[Math.floor(Math.random() * starColors.length)];
+        p.style.zIndex = '10005';
+        p.style.pointerEvents = 'none';
+        p.style.filter = `drop-shadow(0 0 8px ${starColors[Math.floor(Math.random() * starColors.length)]})`;
+
+        // 천천히 내려오면서 반짝이게 하는 애니메이션 속성 설정
+        const fallDuration = Math.random() * 3 + 4; // 4초 ~ 7초 동안 천천히 낙하
+        p.style.transition = `transform ${fallDuration}s cubic-bezier(0.25, 1, 0.5, 1), opacity ${fallDuration}s ease-in-out`;
+
+        document.body.appendChild(p);
+
+        const driftX = (Math.random() - 0.5) * 120; // 좌우 살랑거리는 유선형 이동 범위
+        const rotate = Math.random() * 720 - 360;
+
+        // 생성 시차(delay)를 0 ~ 2초까지 시차를 넓게 벌려서 파티클이 뭉치는 현상 방지
+        const delay = Math.random() * 2000;
+
+        setTimeout(() => {
+          p.style.transform = `translate(${driftX}px, ${window.innerHeight + 120}px) rotate(${rotate}deg)`;
+          p.style.opacity = '0.1';
+        }, 30 + delay);
+
+        setTimeout(() => {
+          p.remove();
+        }, (fallDuration * 1000) + delay + 200);
+      }
+    }
+
+    function showComboText(x, y, count) {
+      const combo = document.createElement('div');
+      combo.className = 'combo-display';
+      combo.innerText = `${count} COMBO! 🔥`;
+      
+      if (count >= 10) {
+        combo.style.color = '#ff1744';
+        combo.style.fontSize = '3.5rem';
+      } else if (count >= 5) {
+        combo.style.color = '#ff9100';
+        combo.style.fontSize = '3.2rem';
+      }
+
+      combo.style.left = `${x}px`;
+      combo.style.top = `${y}px`;
+
+      document.body.appendChild(combo);
+
+      setTimeout(() => {
+        combo.remove();
+      }, 450);
+    }
+
+    // 초기 토끼 생성 (15개)
+    window.onload = function() {
+      for (let i = 0; i < MAX_BUNNIES; i++) {
+        setTimeout(createBunny, i * 150);
+      }
+    };
+  </script>
+</body>
+</html>
