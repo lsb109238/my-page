@@ -70,6 +70,21 @@
 .st-c2{grid-template-columns:repeat(2,minmax(0,1fr))}.st-c3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:600px){.st-c2,.st-c3{grid-template-columns:1fr}}
 .st-col{min-width:0}
+.st-swipe{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 14px;-webkit-overflow-scrolling:touch}
+.st-swipe>*{flex:0 0 min(72%,240px);box-sizing:border-box;scroll-snap-align:start}
+.st-nav-i{margin-right:5px}
+@media(max-width:600px){.st-nav-tab{position:fixed;top:auto;bottom:0;left:0;border-bottom:0;border-top:1px solid rgba(0,0,0,.1);padding-bottom:env(safe-area-inset-bottom)}.st-nav-tab .st-nav-in{flex-wrap:nowrap;justify-content:space-around;gap:0;padding:4px}.st-nav-tab .st-nav-a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:12px;border-radius:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.st-nav-tab .st-nav-a.is-on{background:none;color:var(--st-accent)}.st-nav-tab .st-nav-i{margin:0;font-size:22px;line-height:1.1}}
+.st-g-point{--st-g:linear-gradient(135deg,rgba(255,255,255,0),rgba(255,255,255,.45)),linear-gradient(var(--st-accent),var(--st-accent));--st-gi:#fff}.st-g-sunset{--st-g:linear-gradient(135deg,#f43f5e,#f97316);--st-gi:#fff}.st-g-ocean{--st-g:linear-gradient(135deg,#2563eb,#06b6d4);--st-gi:#fff}.st-g-grape{--st-g:linear-gradient(135deg,#7c3aed,#ec4899);--st-gi:#fff}.st-g-forest{--st-g:linear-gradient(135deg,#047857,#34d399);--st-gi:#fff}.st-g-night{--st-g:linear-gradient(135deg,#0f172a,#475569);--st-gi:#fff}.st-g-peach{--st-g:linear-gradient(135deg,#ffe4e6,#fef3c7);--st-gi:#222}.st-g-mint{--st-g:linear-gradient(135deg,#d1fae5,#dbeafe);--st-gi:#222}.st-g-lav{--st-g:linear-gradient(135deg,#ede9fe,#fce7f3);--st-gi:#222}
+html body [class*="st-g-"]{background-image:var(--st-g);color:var(--st-gi)}
+html body .st-gtx{color:transparent;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.st-hv-lift,.st-hv-grow,.st-hv-glow,.st-hv-press{transition:translate .2s,scale .2s,box-shadow .2s}
+@media(hover:hover){.st-hv-lift:hover{translate:0 -6px;box-shadow:0 14px 28px rgba(0,0,0,.18)}.st-hv-grow:hover{scale:1.04}.st-hv-glow:hover{box-shadow:0 8px 24px rgba(0,0,0,.25);box-shadow:0 0 0 3px color-mix(in srgb,var(--st-accent) 35%,transparent),0 8px 24px color-mix(in srgb,var(--st-accent) 45%,transparent)}}
+.st-hv-press:active{scale:.95}
+html.st-js [data-st-in]{opacity:0;transition:opacity .6s ease,transform .6s ease,translate .2s,scale .2s,box-shadow .2s}
+html.st-js [data-st-in="up"]{transform:translateY(26px)}html.st-js [data-st-in="zoom"]{transform:scale(.9)}html.st-js [data-st-in="left"]{transform:translateX(-30px)}
+html.st-js [data-st-in].is-in{opacity:1;transform:none}
+html.st-editing [data-st-in]{opacity:1!important;transform:none!important}
+.st-editing .st-swipe{flex-wrap:wrap;overflow:visible}
 html.st-dark{filter:invert(1) hue-rotate(180deg);background:#fff}
 html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filter:invert(1) hue-rotate(180deg)}
 .st-editing .st-tab-panel{display:block!important;outline:2px dashed rgba(0,0,0,.18);outline-offset:4px;margin:12px 0}
@@ -81,7 +96,8 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
 <nav class="st-nav" data-studio="nav">
   <div class="st-nav-in">
     <a class="st-nav-a is-on" href="index.html">홈</a>
-    <a class="st-nav-a" href="about.html">소개</a>
+    <a class="st-nav-a" href="about.html">about</a>
+    <a class="st-nav-a" href="menu.html">menu</a>
   </div>
 </nav>
 @@ -0,0 +1,1032 @@
@@ -500,23 +516,23 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
   <div class="container">
     
     <!-- 프로필 헤더 -->
-    <header class="header">
+    <header class="header st-hv-grow">
       <div class="title-sub">푹신한 이불 속이 제일 좋은</div>
       <h1 class="bounce-nickname" id="nickname">
-        <span>집</span><span>가</span><span>고</span><span>싶</span><span>다</span>
+        <span class="st-hv-grow">집</span><span class="st-hv-lift">가</span><span class="st-hv-grow">고</span><span class="st-hv-lift">싶</span><span class="st-hv-grow">다</span>
       </h1>
       <br>
-      <div class="bed-badge">🛏️ 장래희망: 침대와 일체화</div>
+      <div class="bed-badge st-hv-grow">🛏️ 장래희망: 침대와 일체화</div>
     </header>
     <!-- 좋아하는 것 3가지 (카드 뒤집기) -->
     <section>
-      <h2 class="section-title">✨ 내가 좋아하는 3가지 (터치해봐!)</h2>
+      <h2 class="section-title st-hv-grow">✨ 내가 좋아하는 3가지 (터치해봐!)</h2>
       <div class="card-grid">
         
         <!-- 카드 1: 집 -->
         <div class="flip-card" onclick="flipCard(this)">
           <div class="flip-card-inner">
-            <div class="flip-card-front">
+            <div class="flip-card-front st-hv-grow">
               <div class="icon">🏠</div>
               <div class="item-name">집</div>
               <div class="hint">💬 누르면 이유 공개!</div>
@@ -530,7 +546,7 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
         <!-- 카드 2: 그림 -->
         <div class="flip-card" onclick="flipCard(this)">
           <div class="flip-card-inner">
-            <div class="flip-card-front">
+            <div class="flip-card-front st-hv-grow">
               <div class="icon">🎨</div>
               <div class="item-name">그림</div>
               <div class="hint">💬 누르면 이유 공개!</div>
@@ -544,7 +560,7 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
         <!-- 카드 3: 침대 -->
         <div class="flip-card" onclick="flipCard(this)">
           <div class="flip-card-inner">
-            <div class="flip-card-front">
+            <div class="flip-card-front st-hv-grow">
               <div class="icon">🛌</div>
               <div class="item-name">침대</div>
               <div class="hint">💬 누르면 이유 공개!</div>
@@ -558,20 +574,20 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
       </div>
     </section>
     <!-- OX 퀴즈 -->
-    <section class="quiz-card">
-      <h2 class="section-title">❓ OX 퀴즈</h2>
-      <div class="quiz-question">"나는 지금 잠을 자고 싶다!"</div>
+    <section class="quiz-card st-hv-grow" data-st-in="zoom">
+      <h2 class="section-title" data-st-in="fade">❓ OX 퀴즈</h2>
+      <div class="quiz-question" data-st-in="fade">"나는 지금 잠을 자고 싶다!"</div>
       <div class="quiz-buttons">
-        <button class="quiz-btn quiz-btn-o" onclick="checkQuiz(true)">O</button>
-        <button class="quiz-btn quiz-btn-x" onclick="checkQuiz(false)">X</button>
+        <button class="quiz-btn quiz-btn-o" onclick="checkQuiz(true)" data-st-in="fade">O</button>
+        <button class="quiz-btn quiz-btn-x" onclick="checkQuiz(false)" data-st-in="fade">X</button>
       </div>
-      <div class="quiz-result" id="quiz-result">버튼을 눌러 정답을 맞혀보세요!</div>
+      <div class="quiz-result" id="quiz-result" data-st-in="fade">버튼을 눌러 정답을 맞혀보세요!</div>
     </section>
     <!-- 오늘 할 미션 뽑기 -->
-    <section class="mission-card">
-      <h2 class="section-title">🎲 오늘 할 미션 뽑기</h2>
-      <div class="mission-display" id="mission-display">버튼을 눌러 오늘의 미션을 확인하세요! 💤</div>
-      <button class="draw-btn" onclick="drawMission()">미션 뽑기 🎯</button>
+    <section class="mission-card st-hv-grow" data-st-in="zoom">
+      <h2 class="section-title st-hv-grow" data-st-in="fade">🎲 오늘 할 미션 뽑기</h2>
+      <div class="mission-display st-hv-grow" id="mission-display" data-st-in="fade">버튼을 눌러 오늘의 미션을 확인하세요! 💤</div>
+      <button class="draw-btn st-hv-grow" onclick="drawMission()" data-st-in="fade">미션 뽑기 🎯</button>
     </section>
     <footer class="footer">
       © 푹신푹신 집가고싶다의 소소한 소개 페이지
@@ -983,9 +999,7 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
     };
   </script>
 
-<!-- ▼ 방명록·OX 투표 (4차시) ▼ --><sb-widget id="sb-web" style="display:block;width:100%;max-width:640px;margin:32px auto;flex:1 1 100%;grid-column:1/-1;align-self:stretch;box-sizing:border-box"></sb-widget>
-<button class="st-btn" type="button" data-st="dark">🌙 다크 모드</button>
-<script>
+<!-- ▼ 방명록·OX 투표 (4차시) ▼ --><sb-widget id="sb-web" style="display:block;width:100%;max-width:640px;margin:32px auto;flex:1 1 100%;grid-column:1/-1;align-self:stretch;box-sizing:border-box"></sb-widget><script>
 (function () {
   var C = {"id":"sb-web","url":"https://script.google.com/macros/s/AKfycbzsuY7zRqy7GllFW9yVOKYvf3MCg0x6KZAZeVO-GUodyzpdTiUPZ4avhv1FJSjCrwK9/exec","q":"나는 지금 잠을 자고 싶다","title":"방명록","sel":"","pos":"before"};
   var host = document.getElementById(C.id);
@@ -1306,6 +1320,8 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
 })();
 
 </script><!-- ▲ 방명록·OX 투표 끝 ▲ -->
+<button class="st-btn" type="button" data-st="dark">🌙 다크 모드</button>
+
 
 
 
@@ -1427,6 +1443,13 @@ Copied!
       try { if (localStorage.getItem('st-dark') === '1') document.documentElement.classList.add('st-dark'); } catch (e) {}
       b.addEventListener('click', function () { var on = document.documentElement.classList.toggle('st-dark'); try { localStorage.setItem('st-dark', on ? '1' : '0'); } catch (e) {} });
     });
+    // 스크롤 등장 효과: 화면에 들어오면 나타남 (지원하지 않는 브라우저·움직임 줄이기 설정에서는 그냥 보임)
+    var ins = document.querySelectorAll('[data-st-in]');
+    if (ins.length && 'IntersectionObserver' in window && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.documentElement.classList.add('st-js');
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { threshold: 0.08 });
+      Array.prototype.forEach.call(ins, function (e) { io.observe(e); });
+    }
   })();
 </script>
 </body></html>
